@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book-View</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+button.save, button.cancel {
+	display: none;
+}
+body{
+    background-color:azure;
+}
+</style>
+</head>
+
+<body>
+	<div class="all">
+		<div class="header">
+			<div class="row">
+				<h1>Thông tin sách</h1>
+			</div>
+		</div>
+
+		<div class="content">
+			<form class="form_content" th:object="${book}" enctype="multipart/form-data" th:action="@{save/{id}(id=${book.bookcode})}" 
+				th:method="${bookcode} < 0 ? POST : PUT">
+				<div class="info_content">
+					<div class="text_content">
+						<div class="bk">
+							<label for="tde">Mã sách</label> <input type="text" id="id" name="bookcode" required disabled th:value="${book.bookcode}">
+						</div>
+
+						<div class="td">
+							<label for="tde">Tiêu đề</label> <input type="text" id="tde" name="tieude" required disabled th:value="${book.tieude}">
+						</div>
+
+						<div class="tg">
+							<label for="tgia">Tác giả</label> <input type="text" id="tgia" name="tacgia" required disabled th:value="${book.tacgia}">
+						</div>
+
+						<div class="mota">
+							<label for="mta">Mô tả</label> <input type="text" id="mta" name="mota" required disabled th:value=${book.mota}>
+						</div>
+
+						<div class="tl">
+							<label for="tloai">Thể loại</label> 
+							<!--  <input type="text" id="tloai" name="theloai" th:value="${book.theloai}"> -->
+							<select name="theloai" id="tloai" disabled>
+                				<option selected>Khoa Học</option>
+                				<option>Viễn Tưởng</option>
+                				<option>Chiến Tranh</option>
+                				<option>Truyện Tranh</option>
+                				<option>Tội Phạm</option>
+                				<option>Tâm Lý</option>
+                				<option>Tình Yêu</option>
+                				<option>Hình Sự</option>
+                				<option>Khác</option>
+            				</select>
+						</div>
+
+						<div class="nph">
+							<label for="nphanh">Ngày phát hành</label> <input type="text" id="nphanh" name="ngayphathanh" required disabled th:value="${book.ngayphathanh}">
+						</div>
+
+						<div class="st">
+							<label for="strang">Số trang</label> <input type="number" id="strang" name="sotrang" size="8" required disabled th:value="${book.sotrang}">
+						</div>
+
+					</div>
+
+					<div class="content_photo">
+						<div class="ab">
+							<label>Ảnh bìa của sách</label>
+							<div class="anh">
+								<!-- <img th:src="@{/images/{img}(img = ${book.img})}" width="200px" id="" alt="photo" /> -->
+								<img width="200px" th:src="@{'/images/'+${book.img}}" >
+							</div>
+							<input type="file" name="fileImage" id="fileImage" accept="images/png, images/jpeg" required disabled th:value="${book.img}">
+							
+							<script>
+                        		window.addEventListener('load', function () {
+                            	  document.querySelector('input[type="file"]').addEventListener('change', function () {
+                                	  if (this.files && this.files[0]) {
+                                    	  var img = document.querySelector('img');
+                                    	  img.onload = () => {
+                                        	  URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                                   		  }
+    
+                                    	  img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                                		}
+                            	   });
+                        		 });
+                         	</script>
+						</div>
+					</div>
+				</div>
+
+				<!-- Save-edit buttom -->
+				<div class="submit_content">
+					<button type="button" class="btn btn-secondary" value="edit" id="edit">Chỉnh sửa</button>
+        			<button type="submit" class="btn btn-success save" value="save" id="save">Lưu thay đổi</button>
+        			<button type="button" class="btn btn-secondary cancel" value="cancel" id="cancel">Không lưu</button>
+				</div>
+				<script>
+		        if (window.location.toString().includes("-1")){
+		        	$('#edit').hide();
+		            $('#save').show();
+		            $('input').attr("disabled", false)
+		            $('select').attr("disabled", false)
+		            
+		        }
+		        else{
+		            $('#edit').click(function () {
+		                $(this).hide();
+		                $('#save, #cancel').show();
+		                $('input').attr("disabled", false)
+		                $('select').attr("disabled", false)
+		            });
+
+
+		            $('#cancel').click(function () {
+		                $('#edit').show();
+		                $('#save, #cancel').hide();
+		                $('input').attr("disabled", true)
+		                $('select').attr("disabled", true)
+		            });
+
+		            $('#save').click(function () {
+		                $(this).hide();
+		                $('#cancel').hide();
+		                $('#edit').show();
+		            });
+		        }
+        			
+    			</script>
+
+			</form>
+		</div>
+
+	</div>
+
+</body>
+
+</html>
