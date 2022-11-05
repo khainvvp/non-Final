@@ -5,4 +5,8 @@ Họ và tên sinh viên: Nguyễn Văn Khải - B19DCAT103
 Sản phẩm của em tương đối đầy đủ các chức năng theo yêu cầu như: Thêm, Sửa, Xoá, Login, Resgiter, Logout,... và một số những chức năng khác. 
 Tuy nhiên sản phẩm còn nhiều thiếu sót, rất mong thầy quan tâm và góp ý ạ !
 
+Account Login: 
+    Email:      khainv07@fpt.com.vn
+    Password:   123456
+
 Date commit: 05/11/2022
