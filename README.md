@@ -6,7 +6,6 @@ Sản phẩm của em tương đối đầy đủ các chức năng theo yêu c�
 Tuy nhiên sản phẩm còn nhiều thiếu sót, rất mong thầy quan tâm và góp ý ạ !
 
 Account Login: 
-    Email:      khainv07@fpt.com.vn
-    Password:   123456
+    Email:      khainv07@fpt.com.vn  -  Password:   123456
 
 Date commit: 05/11/2022
