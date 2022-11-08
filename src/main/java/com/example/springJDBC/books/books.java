@@ -2,11 +2,17 @@ package com.example.springJDBC.books;
 
 import java.sql.Blob;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
 import org.springframework.web.multipart.MultipartFile;
 
 public class books {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int bookcode;
 	private String tieude, tacgia, theloai, ngayphathanh, mota;
-	private int sotrang, bookcode;
+	private int sotrang;
 	public MultipartFile getImageFile() {
 		return imageFile;
 	}
