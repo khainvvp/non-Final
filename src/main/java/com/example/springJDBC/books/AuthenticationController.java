@@ -46,16 +46,16 @@ public class AuthenticationController {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
 		if(bindingResult.hasErrors()) {
-			modelAndView.addObject("successMessage", "Please correct the errors in form!");
+			modelAndView.addObject("successMessage", "Vui lòng nhập lại đúng thông tin !");
 			modelMap.addAttribute("bindingResult", bindingResult);
 		}
 		else if(userService.isUserAlreadyPresent(user)){
-			modelAndView.addObject("successMessage", "user already exists!");			
+			modelAndView.addObject("successMessage", "Email đã tồn tại !");			
 		}
 		// we will save the user if, no binding errors
 		else {
 			userService.saveUser(user);
-			modelAndView.addObject("successMessage", "User is registered successfully!");
+			modelAndView.addObject("successMessage", "Tạo tài khoản mới thành công !");
 		}
 		modelAndView.addObject("user", new User());
 		modelAndView.setViewName("register");

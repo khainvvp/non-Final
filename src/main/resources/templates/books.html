@@ -17,6 +17,7 @@
 <link rel="stylesheet" th:href="@{css/slicknav.min.css}" th:type="@{text/css}">
 <link rel="stylesheet" th:href="@{css/newstyle.css}" th:type="@{text/css}">
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 body {
 	background-image: linear-gradient(45deg,rgba(15, 24, 33, 0.8) 55%,rgb(5, 39, 34)), url("images/background2.png");
@@ -52,7 +53,7 @@ form {
 						<div class="col-lg-6 col-md-6">
 							<div class="header__top__left">
 								<ul>
-									<div th:text="${#request.remoteUser}"></div>
+									<!-- <div th:text="${#request.remoteUser}"></div>-->
 									<li>Lập trình web nhóm 03</li>
 								</ul>
 							</div>
@@ -74,15 +75,6 @@ form {
 		</div>
 		
         <a th:href="@{book/{id}(id = -1)}" class="btn btn-success" th:value="addbook">Thêm sách</a>
-        
-		<script>
-       	 	$('#addbook').click(function () {
-       	 		$('#edit').hide();
-           		$('#save').show();
-           		$('input').attr("disabled", true)
-           		$('select').attr("disabled", true)
-       		});
-       	</script>
 		<table class="table table-striped table-bordered">
 			<thead class="table-dark">
 				<tr>
@@ -93,7 +85,6 @@ form {
 					<th>Ngày phát hành</th>
 					<th>Số Trang</th>
 					<th>Thực hiện</th>
-					<th></th>
 				</tr>
 			</thead>
 
@@ -106,13 +97,28 @@ form {
 					<td th:text="${book.theloai}"></td>
 					<td th:text="${book.ngayphathanh}"></td>
 					<td th:text="${book.sotrang}"></td>
-					<td><a th:href="@{book/{id}(id = ${book.bookcode})}"
-						class="btn btn-success">Xem</a>
-						<a th:href="@{book/delete/{id}(id = ${book.bookcode})}" class="btn btn-danger">Xoá</a></td>
+					<td><a th:href="@{book/{id}(id = ${book.bookcode})}" class="btn btn-success">Xem</a>
+						<a th:href="@{book/delete/{id}(id = ${book.bookcode})}" 
+							class="btn btn-danger deleteRow" data-confirm="Bạn có chắc muốn xoá ?">Xoá</a></td>
 				</tr>
 			</tbody>
 		</table>
-        <form action="#" th:action="@{/logout}" method="POST" class="formout"> 
+		<script>
+			var deleteLinks = document.querySelectorAll('.deleteRow');
+
+			for (var i = 0; i < deleteLinks.length; i++) {
+				deleteLinks[i].addEventListener('click', function(event) {
+					event.preventDefault();
+
+					var choice = confirm(this.getAttribute('data-confirm'));
+
+					if (choice) {
+						window.location.href = this.getAttribute('href');
+					}
+				});
+			}
+		</script>
+		<form action="#" th:action="@{/logout}" method="POST" class="formout"> 
             <input type="submit" value="Đăng xuất" class="btn btn-outline-primary mt-2" />
         </form>
 	</div>
