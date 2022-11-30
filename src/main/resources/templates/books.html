@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,34 +42,40 @@ form {
   flex-direction: column;
   align-items: flex-end;
 }
-
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
 </style>
 </head>
-<body>  
-	<div class="container">
-		<header class="header">
-			<div class="header__top">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-6 col-md-6">
-							<div class="header__top__left">
-								<ul>
-									<!-- <div th:text="${#request.remoteUser}"></div>-->
-									<li>Lập trình web nhóm 03</li>
-								</ul>
-							</div>
+<body>
+	<header class="header">
+		<div class="header__top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<div class="header__top__left">
+							<ul>
+								<!-- <div th:text="${#request.remoteUser}"></div>-->
+								<li>Lập trình web nhóm 03</li>
+							</ul>
 						</div>
-						<div class="col-lg-6 col-md-6">
-							<div class="header__top__right">
-								<div class="header__top__right__auth">
-                                    <a th:href="@{login}"><i class='fas fa-user-alt'></i> Đăng nhập</a>
-								</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="header__top__right">
+							<div class="header__top__right__auth clearfix">
+								<a th:href="@{login}"><i class='fa fa-user'></i> Đăng nhập</a>
+								<a href="#">|</a>  
+								<a th:href="@{register}"><i class='fa fa-user-plus'></i> Đăng ký</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</header>
+		</div>
+	</header>
+	<div class="container">
 
 		<div class="tieude">
 			<h1>Thư viện sách</h1>
@@ -103,7 +110,9 @@ form {
 				</tr>
 			</tbody>
 		</table>
-		<script>
+		
+		<!-- confirm delete or not -->
+		<script> 
 			var deleteLinks = document.querySelectorAll('.deleteRow');
 
 			for (var i = 0; i < deleteLinks.length; i++) {

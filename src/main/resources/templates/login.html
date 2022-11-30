@@ -30,11 +30,10 @@ a.inline2{
 				<div align="center" th:if="${param.error}">
 					<p style="font-size: 20; color: #FF1C19;">Email hoặc mật khẩu không hợp lệ.</p>
 				</div>
-				<button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" style="margin-right:10px;"></button>
 				
+				<a th:href="@{books}"><button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" style="margin-right:10px;"></button></a>
 				<div class="inline">
 					<a th:href="@{register}" class="inline1">Tạo tài khoản mới ?</a>
-					<a th:href="@{books}" class="inline2">Đi tới trang chủ</a>
 				</div>
 			</form>
 		</div>

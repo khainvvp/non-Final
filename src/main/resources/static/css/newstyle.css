@@ -398,9 +398,10 @@ ol {
 }
 
 .header__top__right__auth a {
-	display: block;
+	display: inline;
 	font-size: 14px;
 	color: #1c1c1c;
+	margin-right: 10px;
 }
 
 .header__top__right__auth a i {
