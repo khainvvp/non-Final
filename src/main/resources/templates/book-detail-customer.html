@@ -4,11 +4,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book-View</title>
+<title>Book-View-Customer</title>
 <link rel="stylesheet" th:href="@{/css/style.css}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
@@ -46,15 +47,20 @@ body{
 }
 </style>
 </head>
-
 <body>
 	<div class="header-user">
 		<ul class="nav">
 			<li>
+				<div>
+					<a href="#"><img src="/images/add-cart.png" alt="photo" width="30px"></a>
+				</div>
+			</li>
+			<li><img class="avatar" src="/images/signin-image.jpg" alt="photo" width="25" height="25"></li>
+			<li>
 				<div class="dropdown">
-					<button class="button-index btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a>XIN CHÀO QUẢN LÝ !</a></button>
+					<button class="button-index btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[[${#request.remoteUser}]]</button>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" th:href="@{register}"> Tạo tài khoản mới</a></li>
+						<li><a class="dropdown-item" th:href="@{register}">Đăng ký tài khoản mới</a></li>
 						<li class="divider"></li>
 						<li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
 					</ul>
@@ -70,8 +76,7 @@ body{
 		</div>
 
 		<div class="content">
-			<form class="form_content" th:object="${book}" enctype="multipart/form-data" th:action="@{save/{id}(id=${book.bookcode})}" 
-				th:method="${bookcode} < 0 ? POST : PUT">
+			<form class="form_content" th:each="book: ${customer}" enctype="multipart/form-data" th:action="@{save/{id}(id=${book.bookcode})}">
 				<div class="info_content">
 					<div class="text_content">
 
@@ -121,65 +126,66 @@ body{
 								<!-- <img th:src="@{/images/{img}(img = ${book.img})}" width="200px" id="" alt="photo" /> -->
 								<img width="200px" th:src="@{'/images/'+${book.img}}" >
 							</div>
-							<input type="file" name="fileImage" id="fileImage" accept="images/png, images/jpeg" required disabled th:value="${book.img}">
-							
-							<script>
-                        		window.addEventListener('load', function () {
-                            	  document.querySelector('input[type="file"]').addEventListener('change', function () {
-                                	  if (this.files && this.files[0]) {
-                                    	  var img = document.querySelector('img');
-                                    	  img.onload = () => {
-                                        	  URL.revokeObjectURL(img.src);  // no longer needed, free memory
-                                   		  }
-    
-                                    	  img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-                                		}
-                            	   });
-                        		 });
-                         	</script>
 						</div>
+						<ul class="ratings">
+							<li class="star"></li>
+							<li class="star"></li>
+							<li class="star"></li>
+							<li class="star"></li>
+							<li class="star"></li>
+						</ul>
+						<label for="feedback">Đánh giá</label> <input type="text"
+							id="fback" name="feedback" th:value="${book.feedback}" disabled>
+
+
+						<div class="submit_content">
+							<button type="button" class="btn btn-secondary" value="edit"
+								id="edit">Phản hồi</button>
+							<button type="submit" class="btn btn-success save" value="save"
+								id="save">Gửi phản hồi</button>
+							<button type="button" class="btn btn-secondary cancel"
+								value="cancel" id="cancel">Huỷ bo</button>
+						</div>
+
+						<script>
+							$('#edit').click(function() {
+								$(this).hide();
+								$('#save, #cancel').show();
+								$('input').attr("disabled", false)
+
+							});
+
+							$('#cancel').click(function() {
+								$('#edit').show();
+								$('#save, #cancel').hide();
+								$('input').attr("disabled", true)
+
+							});
+
+							$('#save').click(function() {
+								$(this).hide();
+								$('#cancel').hide();
+								$('#edit').show();
+							});
+						</script>
 					</div>
 				</div>
-
-				<!-- Save-edit buttom -->
-				<div class="submit_content">
-					<button type="button" class="btn btn-secondary" value="edit" id="edit">Chỉnh sửa</button>
-        			<button type="submit" class="btn btn-success save" value="save" id="save">Lưu thay đổi</button>
-        			<button type="button" class="btn btn-secondary cancel" value="cancel" id="cancel">Không lưu</button>
-				</div>
+				
+				<a th:href="@{/customer}" class="btn btn-secondary">Thoát</a>
 				<script>
-		        if (window.location.toString().includes("-1")){
-		        	$('#edit').hide();
-		            $('#save').show();
-		            $('input').attr("disabled", false)
-		            $('select').attr("disabled", false)
-		            
-		        }
-		        else{
-		            $('#edit').click(function () {
-		                $(this).hide();
-		                $('#save, #cancel').show();
-		                $('input').attr("disabled", false)
-		                $('select').attr("disabled", false)
-		            });
+					$(function() {
+						var star = '.star', selected = '.selected';
 
+						$(star).on('click', function() {
+							$(selected).each(function() {
+								$(this).removeClass('selected');
+							});
+							$(this).addClass('selected');
+						});
 
-		            $('#cancel').click(function () {
-		                $('#edit').show();
-		                $('#save, #cancel').hide();
-		                $('input').attr("disabled", true)
-		                $('select').attr("disabled", true)
-		            });
-
-		            $('#save').click(function () {
-		                $(this).hide();
-		                $('#cancel').hide();
-		                $('#edit').show();
-		            });
-		        }
-        			
-    			</script>
-
+					});
+				</script>
+				
 			</form>
 		</div>
 

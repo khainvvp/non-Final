@@ -251,7 +251,7 @@ ol {
 -----------------------*/
 
 .header__top {
-	background: #f5f5f5;
+	background:#6b7379;
 }
 
 .header__top__left {
@@ -395,6 +395,7 @@ ol {
 
 .header__top__right__auth {
 	display: inline-block;
+	
 }
 
 .header__top__right__auth a {

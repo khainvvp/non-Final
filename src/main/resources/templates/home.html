@@ -3,18 +3,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Library</title>
+<title>Home</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" th:href="@{css/newstyle.css}" th:type="@{text/css}">
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <style>
 body {
 	background-image: linear-gradient(45deg,rgba(15, 24, 33, 0.8) 55%,rgb(5, 39, 34)), url("images/background2.png");
@@ -31,6 +32,7 @@ div.tieude{
 }
 
 td{
+	
 	text-align: center;
 	vertical-align: middle;
 }
@@ -73,20 +75,21 @@ form {
 .button-index{
 	background-color: #53565a;
 }
-
+.abi{
+	border: 1px solid #e4e4e4;
+  	padding: 12px;
+}
 </style>
 </head>
 <body>
 	<div class="header-user">
 		<ul class="nav">
-			<li><img class="avatar" src="/images/signin-image.jpg" alt="photo" width="25" height="25"></li>
 			<li>
 				<div class="dropdown">
-					<button class="button-index btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a>XIN CHÀO QUẢN LÝ !</a></button>
+					<button class="button-index btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chào mừng bạn tới thư viện sách</button>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" th:href="@{register}"> Tạo tài khoản mới</a></li>
-						<li class="divider"></li>
-						<li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+						<li><a class="dropdown-item" th:href="@{login}">Đăng nhập</a></li>
+						<li><a class="dropdown-item" th:href="@{register}">Đăng ký tài khoản</a></li>
 					</ul>
 				</div>
 			</li>
@@ -98,52 +101,27 @@ form {
 			<h1>Thư viện sách</h1>
 		</div>
 		
-        <a th:href="@{book/{id}(id = -1)}" class="btn btn-success" th:value="addbook">Thêm sách</a>
 		<table class="table table-striped table-bordered">
 			<thead class="table-dark">
 				<tr>
-					<th>Ảnh bìa của sách</th>
+					<th width="30%" height="20px">Ảnh bìa của sách</th>
 					<th>Tiêu đề</th>	
 					<th>Tác giả</th>
-					<th>Thể loại</th>
-					<th>Ngày phát hành</th>
 					<th>Số Trang</th>
-					<th>Thực hiện</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				<tr th:each="book: ${books}">
+				<tr th:each="book: ${home}">
 					<!--  <td><img th:src="@{/images/{img}(img = ${book.img})}" width="100px"></td> -->
-					<td><img th:src="@{'/images/'+${book.img}}" width="100%" height="100px"></td>
-					<td th:text="${book.tieude}"></td>
-					<td th:text="${book.tacgia}"></td>
-					<td th:text="${book.theloai}"></td>
-					<td th:text="${book.ngayphathanh}"></td>
-					<td th:text="${book.sotrang}"></td>
-					<td><a th:href="@{book/{id}(id = ${book.bookcode})}" class="btn btn-success">Xem</a>
-						<a th:href="@{book/delete/{id}(id = ${book.bookcode})}" 
-							class="btn btn-danger deleteRow" data-confirm="Bạn có chắc muốn xoá ?">Xoá</a></td>
+					<td class="abi"><img th:src="@{'/images/'+${book.img}}" width="38%" height="110px"></td>
+					<td class="tde" th:text="${book.tieude}"></td>
+					<td class="tga" th:text="${book.tacgia}"></td>
+					<td class="str" th:text="${book.sotrang}"></td>
 				</tr>
 			</tbody>
 		</table>
-		
-		<!-- confirm delete or not -->
-		<script> 
-			var deleteLinks = document.querySelectorAll('.deleteRow');
 
-			for (var i = 0; i < deleteLinks.length; i++) {
-				deleteLinks[i].addEventListener('click', function(event) {
-					event.preventDefault();
-
-					var choice = confirm(this.getAttribute('data-confirm'));
-
-					if (choice) {
-						window.location.href = this.getAttribute('href');
-					}
-				});
-			}
-		</script>
 	</div>
 </body>
 </html>

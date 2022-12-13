@@ -11,7 +11,7 @@ public class books {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int bookcode;
-	private String tieude, tacgia, theloai, ngayphathanh, mota;
+	private String tieude, tacgia, theloai, ngayphathanh, mota, feedback;
 	private int sotrang;
 	public MultipartFile getImageFile() {
 		return imageFile;
@@ -32,7 +32,7 @@ public class books {
 	private String img;
 	private MultipartFile imageFile;
 	private String imageURL;
-	public books(int bookcode, String tieude, String tacgia, String theloai, String ngayphathanh, int sotrang, String mota, String img) {
+	public books(int bookcode, String tieude, String tacgia, String theloai, String ngayphathanh, int sotrang, String mota, String img, String feedback) {
 		super();
 		this.bookcode=bookcode;
 		this.tieude=tieude;
@@ -42,8 +42,17 @@ public class books {
 		this.sotrang=sotrang;
 		this.mota=mota;
 		this.img=img;
+		this.feedback=feedback;
 	}
 	
+	public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
 	public String getMota() {
 		return mota;
 	}

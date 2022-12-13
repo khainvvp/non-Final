@@ -29,7 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-
+	@Autowired
+	private CustomLoginSuccessHandler sucessHandler;
 
 	@Autowired
 	private DataSource dataSource;
@@ -53,16 +54,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				// URLs matching for access rights
 				.antMatchers("/").permitAll()
-				.antMatchers("/login","/books").permitAll()
+				.antMatchers("/login","/home").permitAll()
 				.antMatchers("/register").permitAll()
-				.antMatchers("/book/**").hasAnyAuthority("SUPER_USER", "ADMIN_USER", "SITE_USER")
+				//.antMatchers("/book/**").hasAnyAuthority("SUPER_USER", "ADMIN_USER", "SITE_USER")
+				.antMatchers("/books","/book/**").hasAnyAuthority("SUPER_USER", "ADMIN_USER", "SITE_USER")
+				.antMatchers("/customer/**").hasAnyAuthority("SITE_USER")
 				.anyRequest().authenticated()
 				.and()
 				// form login
 				.csrf().disable().formLogin()
 				.loginPage("/login")
 				.failureUrl("/login?error=true")
-				.defaultSuccessUrl("/books",true)
+				//.defaultSuccessUrl("/books",true)
+				.successHandler(sucessHandler)
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and()

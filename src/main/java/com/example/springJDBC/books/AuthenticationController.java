@@ -38,9 +38,18 @@ public class AuthenticationController {
 	@RequestMapping(value = "book-detail", method = RequestMethod.GET)
 	public ModelAndView home() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("book-detail"); // resources/template/home.html
+		modelAndView.setViewName("book-detail"); // resources/template/book-detail.html
 		return modelAndView;
 	}
+	
+	
+	/*
+	 * @RequestMapping(value = "/customer", method = RequestMethod.GET) public
+	 * ModelAndView customer() { ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("customer"); // resources/template/customer.html
+	 * return modelAndView; }
+	 */
+	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
 	public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -52,7 +61,7 @@ public class AuthenticationController {
 		else if(userService.isUserAlreadyPresent(user)){
 			modelAndView.addObject("successMessage", "Email đã tồn tại !");			
 		}
-		// we will save the user if, no binding errors
+		// lưu lại user nếu đúng
 		else {
 			userService.saveUser(user);
 			modelAndView.addObject("successMessage", "Tạo tài khoản mới thành công !");

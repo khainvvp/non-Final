@@ -48,7 +48,8 @@ public class BooksController {
 				int sotrang=resultSet.getInt("sotrang");
 				String mota=resultSet.getString("mota");
 				String img=resultSet.getString("img");
-				books.add(new books(bookcode, tieude, tacgia, theloai, ngayphathanh, sotrang, mota, img));
+				String feedback=resultSet.getString("feedback"); 
+				books.add(new books(bookcode, tieude, tacgia, theloai, ngayphathanh, sotrang, mota, img, feedback));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -58,16 +59,126 @@ public class BooksController {
 	}
 	
 	
+	@GetMapping("/customer")
+	public String getCustomer (Model model) throws IOException{
+		Connection connection=null;
+		Statement statement=null;
+		ResultSet resultSet=null;
+		List<books> books=new ArrayList<books>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/books", "root", "khair00t");
+			statement=connection.createStatement();
+			resultSet=statement.executeQuery("select * from book");
+			while(resultSet.next()) {
+				int bookcode=resultSet.getInt("bookcode");
+				String tieude=resultSet.getString("tieude");
+				String tacgia=resultSet.getString("tacgia");
+				String theloai=resultSet.getString("theloai");
+				String ngayphathanh=resultSet.getString("ngayphathanh");
+				int sotrang=resultSet.getInt("sotrang");
+				String mota=resultSet.getString("mota");
+				String img=resultSet.getString("img");
+				String feedback=resultSet.getString("feedback");
+				books.add(new books(bookcode, tieude, tacgia, theloai, ngayphathanh, sotrang, mota, img, feedback));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		model.addAttribute("customer", books);
+		return "customer";
+	}
 	
-//	@GetMapping("/signin")
-//	public String login() {
-//		return "signin";
-//	}
-//	
-//	@GetMapping("/signup")
-//	public String createAcc() {
-//		return "signup";
-//	}
+	
+	
+	@GetMapping("/customer/{bookcode}")
+	public String getBookCustomer(Model model, @PathVariable String bookcode) {
+		model.addAttribute("bookcode", bookcode);
+		Connection connection=null;
+		PreparedStatement ps=null;
+		ResultSet result= null;
+		books book=new books();
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/books", "root", "khair00t");
+			ps=connection.prepareStatement("select * from book where bookcode=?");
+			ps.setInt(1, Integer.valueOf(bookcode));
+			result=ps.executeQuery();
+			while (result.next()) {
+				book.setBookcode(result.getInt("bookcode"));
+				book.setTieude(result.getString("tieude"));
+				book.setTacgia(result.getString("tacgia"));
+				book.setTheloai(result.getString("theloai"));
+				book.setNgayphathanh(result.getString("ngayphathanh"));
+				book.setSotrang(result.getInt("sotrang"));
+				book.setMota(result.getString("mota"));
+				book.setImg(result.getString("img"));
+				book.setFeedback(result.getString("feedback"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		model.addAttribute("customer", book);
+		return "book-detail-customer";
+	}
+	
+	@PutMapping("/customer/save/{bookcode}") //edit feedback
+	public String updateFeedback(books book, @PathVariable String bookcode) {
+		Connection connection=null;
+		PreparedStatement ps=null;
+		int result=0;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/books", "root", "khair00t");
+			ps=connection.prepareStatement("UPDATE book SET feedback=? WHERE bookcode=?");
+			ps.setString(1, book.getFeedback());
+			result=ps.executeUpdate();
+			ps.close();
+			connection.close();
+			
+			return "redirect:/customer";
+		} 
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
+	@GetMapping("/home")
+	public String getHome (Model model) throws IOException{
+		Connection connection=null;
+		Statement statement=null;
+		ResultSet resultSet=null;
+		List<books> books=new ArrayList<books>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/books", "root", "khair00t");
+			statement=connection.createStatement();
+			resultSet=statement.executeQuery("select * from book");
+			while(resultSet.next()) {
+				int bookcode=resultSet.getInt("bookcode");
+				String tieude=resultSet.getString("tieude");
+				String tacgia=resultSet.getString("tacgia");
+				String theloai=resultSet.getString("theloai");
+				String ngayphathanh=resultSet.getString("ngayphathanh");
+				int sotrang=resultSet.getInt("sotrang");
+				String mota=resultSet.getString("mota");
+				String img=resultSet.getString("img");
+				String feedback=resultSet.getString("feedback");
+				books.add(new books(bookcode, tieude, tacgia, theloai, ngayphathanh, sotrang, mota, img, feedback));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		model.addAttribute("home", books);
+		return "home";
+	}
+	
+	/*
+	 * @GetMapping("/bookss") public String bookss() { return "bookss"; }
+	 */
 	
 	@GetMapping("/book/{bookcode}")
 	public String getBook(Model model, @PathVariable String bookcode) {
@@ -92,6 +203,7 @@ public class BooksController {
 				book.setSotrang(result.getInt("sotrang"));
 				book.setMota(result.getString("mota"));
 				book.setImg(result.getString("img"));
+				book.setFeedback(result.getString("feedback"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -100,7 +212,7 @@ public class BooksController {
 		return "book-detail";
 	}
 	
-	@PostMapping("/book/save/{bookcode}")
+	@PostMapping("/book/save/{bookcode}") // them sach
 	public String addBook(books book, @PathVariable String bookcode, @RequestParam("fileImage") MultipartFile multipartFile) {
 		Connection connection=null;
 		PreparedStatement ps=null;
@@ -120,7 +232,7 @@ public class BooksController {
 	        }
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/books", "root", "khair00t");
-			ps=connection.prepareStatement("INSERT INTO book VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			ps=connection.prepareStatement("INSERT INTO book VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			ps.setInt(1, Integer.valueOf(book.getBookcode()));
 			ps.setString(2, book.getTieude());
 			ps.setString(3, book.getTacgia());
@@ -129,6 +241,7 @@ public class BooksController {
 			ps.setInt(6, Integer.valueOf(book.getSotrang()));
 			ps.setString(7, book.getMota());
 			ps.setString(8, multipartFile.getOriginalFilename());
+			ps.setString(9, book.getFeedback());
 			result=ps.executeUpdate();
 			ps.close();
 			connection.close();
@@ -161,7 +274,7 @@ public class BooksController {
 		return "error";
 	}
 	
-	@PutMapping("/book/save/{bookcode}")
+	@PutMapping("/book/save/{bookcode}") //edit sach
 	public String updateBook(books book, @PathVariable String bookcode, @RequestParam("fileImage") MultipartFile multipartFile) {
 		Connection connection=null;
 		PreparedStatement ps=null;
