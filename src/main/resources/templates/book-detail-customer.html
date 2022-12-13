@@ -76,7 +76,7 @@ body{
 		</div>
 
 		<div class="content">
-			<form class="form_content" th:each="book: ${customer}" enctype="multipart/form-data" th:action="@{save/{id}(id=${book.bookcode})}">
+			<form class="form_content" th:each="book: ${customer}">
 				<div class="info_content">
 					<div class="text_content">
 
@@ -127,7 +127,7 @@ body{
 								<img width="200px" th:src="@{'/images/'+${book.img}}" >
 							</div>
 						</div>
-						<ul class="ratings">
+						<ul class="ratings" aria-disabled="true">
 							<li class="star"></li>
 							<li class="star"></li>
 							<li class="star"></li>
